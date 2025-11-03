@@ -1,0 +1,148 @@
+:root{
+  --bg: #f3f6f9;
+  --card: #ffffff;
+  --accent: #2b7cff;
+  --muted: #6b7280;
+  --glass: rgba(255,255,255,0.55); /* usado para aparência translúcida */
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #e9f0ff 0%, var(--bg) 100%);
+  color:#111827;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Topbar */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 24px;
+  background:var(--card);
+  box-shadow:0 1px 6px rgba(16,24,40,0.06);
+  border-bottom:1px solid rgba(16,24,40,0.04);
+}
+.brand{margin:0;font-size:1.125rem;letter-spacing:0.2px}
+.top-actions{color:var(--muted);font-size:0.95rem}
+
+/* Layout */
+.container{
+  display:grid;
+  grid-template-columns: 260px 1fr;
+  gap:20px;
+  padding:20px;
+  width:100%;
+  max-width:1200px;
+  margin:20px auto;
+  align-items:start;
+}
+
+/* SIDEBAR — ul translúcido sem afetar li */
+.sidebar{
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+/* aqui usamos background-color com transparência — somente o fundo do ul fica translúcido */
+.menu{
+  list-style:none;
+  margin:0;
+  padding:16px;
+  background: rgba(10, 25, 47, 0.55); /* cor escura translúcida */
+  color:#fff;
+}
+
+.menu li{
+  margin:8px 0;
+}
+
+.menu a{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  padding:10px 12px;
+  border-radius:8px;
+  transition:background .15s, transform .05s;
+}
+
+.menu a:hover{ background: rgba(255,255,255,0.06); transform:translateX(4px) }
+
+/* MAIN */
+.main{min-height:400px}
+
+.panel{
+  background:var(--card);
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 8px 30px rgba(2,6,23,0.04);
+  margin-bottom:18px;
+}
+
+/* Form */
+.form{display:grid;gap:12px}
+.row{display:flex;flex-direction:column}
+.row label{font-size:0.9rem;margin-bottom:6px;color:var(--muted)}
+.row input, .row select, .row textarea{
+  padding:10px 12px;
+  border:1px solid rgba(15,23,42,0.08);
+  border-radius:8px;
+  font-size:0.95rem;
+  background:transparent;
+}
+
+/* buttons */
+.btn{
+  padding:8px 12px;
+  border-radius:8px;
+  border:none;
+  background:#eef2ff;
+  cursor:pointer;
+  font-weight:600;
+}
+.cadastrar-btn{ background:var(--accent); color:white;
+border-radius: 10px; 
+border: none;
+cursor: pointer;}
+.btn.small{ padding:6px 8px; font-size:0.85rem }
+
+/* layout form actions */
+.form-actions{display:flex;gap:12px;margin-top:6px}
+
+/* Table */
+.table{width:100%;border-collapse:collapse;font-size:0.95rem}
+.table th, .table td{padding:10px 12px;text-align:left;border-bottom:1px solid rgba(15,23,42,0.04)}
+.table thead th{font-weight:600;color:var(--muted);background:transparent}
+
+/* LIST CARD — pseudo-element cria "vidro" atrás da tabela (transparência sem afetar células) */
+.list-card{
+  position:relative;
+  padding:12px;
+  border-radius:10px;
+  overflow:hidden;
+  background:transparent;
+}
+.list-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(245,247,250,0.45));
+  backdrop-filter: blur(6px);
+  z-index:0;
+}
+.list-card > * { position:relative; z-index:1; }
+
+/* Footer */
+.footer{padding:10px 24px;text-align:center;color:var(--muted);font-size:0.85rem}
+
+/* Responsividade */
+@media (max-width:900px){
+  .container{grid-template-columns:1fr; padding:12px}
+  .sidebar{order:2}
+  .main{order:1}
+}
