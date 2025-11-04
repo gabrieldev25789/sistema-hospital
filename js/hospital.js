@@ -10,68 +10,116 @@ const table = document.querySelector(".table")
 
 const pacientesContainer = document.querySelector(".table")
 
-generoSelect.addEventListener("change", () =>{
+const tBody = document.querySelector("#tbody")
 
-    if(generoSelect.value === "M"){
-        console.log("Masculino")
-    } else{
-        console.log("Feminino")
-    }
-})
-
-const buttonRemover = document.createElement("button")
-buttonRemover.classList.add("btn-remove")
-buttonRemover.textContent = "X"
-
-function cadastrarPaciente(){
-    cadastrarBtn.addEventListener("click", (e) =>{
+function carregarPacientes() {
+  const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || []
+  pacientesSalvos.forEach((paciente) => {
+    adicionarPacienteNaTabela(paciente)
+  })
+  if (pacientesSalvos.length > 0) {
     pacientesContainer.classList.remove("hide")
-    e.preventDefault()
-    
-    const tbody = document.createElement("tbody")
-
-    const tr = document.createElement("tr")
-
-    const tdNome = document.createElement("td")
-    const tdIdade = document.createElement("td")
-    const tdGenero = document.createElement("td")
-    const tdSintoma = document.createElement("td")
-
-    const buttonEditar = document.createElement("button")
-    buttonEditar.classList.add("btn-edit")
-    buttonEditar.textContent = "Editar"
-
-    tdNome.textContent = nomePaciente.value 
-    tdIdade.textContent = idadePaciente.value 
-    tdGenero.textContent = generoSelect.value 
-    tdSintoma.textContent = sintomas.value 
-
-    tr.appendChild(tdNome)
-    tr.appendChild(tdIdade)
-    tr.appendChild(tdGenero)
-    tr.appendChild(tdSintoma)
-    tr.appendChild(buttonEditar)
-    tr.appendChild(buttonRemover)
-
-    table.appendChild(tr)
-
-    console.log(nomePaciente.value)
-    console.log(idadePaciente.value)
-    console.log(generoSelect.value)
-    console.log(sintomas.value)
-
-    buttonRemover.addEventListener("click", (e) =>{
-    [tdNome, tdIdade, tdGenero, tdSintoma, buttonEditar, buttonRemover].forEach((el)=> 
-    el.remove())
-    })
-    LimparCampos()
-})
+  }
 }
+
+function adicionarPacienteNaTabela(paciente) {
+
+  const tr = document.createElement("tr")
+  const tdNome = document.createElement("td")
+  const tdIdade = document.createElement("td")
+  const tdGenero = document.createElement("td")
+  const tdSintoma = document.createElement("td")
+
+  tdNome.textContent = paciente.nome
+  tdIdade.textContent = paciente.idade
+  tdGenero.textContent = paciente.genero
+  tdSintoma.textContent = paciente.sintomas
+
+   const buttonEditar = document.createElement("button")
+  buttonEditar.classList.add("btn-edit")
+  buttonEditar.textContent = "Editar"
+
+  const buttonRemover = document.createElement("button")
+  buttonRemover.classList.add("btn-remove")
+  buttonRemover.textContent = "X"
+
+  // Evento de remover paciente
+  buttonRemover.addEventListener("click", () => {
+    tr.remove()
+    removerPacienteLocalStorage(paciente)
+  })
+
+  tr.appendChild(tdNome)
+  tr.appendChild(tdIdade)
+  tr.appendChild(tdGenero)
+  tr.appendChild(tdSintoma)
+  tr.appendChild(buttonEditar)
+  tr.appendChild(buttonRemover)
+
+  table.appendChild(tr)
+}
+
+function cadastrarPaciente() {
+  cadastrarBtn.addEventListener("click", (e) => {
+    e.preventDefault()
+    pacientesContainer.classList.remove("hide")
+
+    const paciente = {
+      nome: nomePaciente.value,
+      idade: idadePaciente.value,
+      genero: generoSelect.value,
+      sintomas: sintomas.value,
+    }
+
+    adicionarPacienteNaTabela(paciente)
+    salvarPacienteLocalStorage(paciente)
+    LimparCampos()
+  })
+}
+
+function salvarPacienteLocalStorage(paciente) {
+  const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || []
+  pacientesSalvos.push(paciente)
+  localStorage.setItem("pacientes", JSON.stringify(pacientesSalvos))
+  /*editarPaciente(paciente)*/
+}
+
+function removerPacienteLocalStorage(pacienteRemovido) {
+  const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || []
+  const novosPacientes = pacientesSalvos.filter(
+    (p) =>
+      !(
+        p.nome === pacienteRemovido.nome &&
+        p.idade === pacienteRemovido.idade &&
+        p.genero === pacienteRemovido.genero &&
+        p.sintomas === pacienteRemovido.sintomas
+      )
+  )
+  localStorage.setItem("pacientes", JSON.stringify(novosPacientes))
+}
+
+function LimparCampos() {
+  nomePaciente.value = ""
+  idadePaciente.value = ""
+  generoSelect.value = ""
+  sintomas.value = ""
+}
+
+/*
+function editarPaciente(paciente){
+
+    buttonEditar.addEventListener("click", () =>{
+    console.log(paciente)
+    nomePaciente.value = paciente.nome 
+    idadePaciente.value = paciente.idade 
+    generoSelect.value = paciente.genero
+    sintomas.value = paciente.sintomas
+    removerPacienteLocalStorage(paciente)
+    })
+}
+*/ 
+
+// Inicialização
+carregarPacientes()
 cadastrarPaciente()
 
-function LimparCampos(){
-    nomePaciente.value = ""
-    idadePaciente.value = ""
-    generoSelect.value = ""
-    sintomas.value = ""
-}
