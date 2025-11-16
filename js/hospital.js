@@ -5,7 +5,7 @@ const idadePaciente = document.querySelector("#age");
 const generoSelect = document.querySelector("#gender");
 const sintomas = document.querySelector("#symptoms");
 
-const pacientesContainer = document.querySelector(".table")
+const pacientesContainer = document.querySelector(".table");
 const table = document.querySelector(".table"); // outer table element (if you have one)
 const tBody = document.querySelector("#tbody"); // prefer appending rows to tbody
 
@@ -33,9 +33,14 @@ function criarTd(text = "") {
   return td;
 }
 
+function criaTr(){
+  const tr = document.createElement("tr");
+  return tr;
+}
+
 function adicionarPacienteNaTabela(paciente) {
   // create row and cells
-  const tr = document.createElement("tr");
+  const tr = criaTr();
 
   const tdNome = criarTd(paciente.nome);
   const tdIdade = criarTd(paciente.idade);
@@ -46,16 +51,15 @@ function adicionarPacienteNaTabela(paciente) {
   // buttons in their own td
   const tdActions = document.createElement("td");
   const buttonEditar = criaButtonEditar();
+
+  // <-- buttonRemover MUST be criado por linha
   const buttonRemover = document.createElement("button");
   buttonRemover.classList.add("btn-remove");
   buttonRemover.textContent = "X";
 
-  // remove event
+  // remove event: abrir modal de confirmação que, ao confirmar, remove a linha e do storage
   buttonRemover.addEventListener("click", () => {
-    tr.remove();
-    removerPacienteLocalStorage(paciente);
-    // hide container if no rows left
-    if (!tBody.querySelector("tr")) pacientesContainer.classList.add("hide");
+    confirmarRemocao(paciente, tr);
   });
 
   // edit event
@@ -133,7 +137,8 @@ function salvarPacienteLocalStorage(paciente) {
 
 function removerPacienteLocalStorage(pacienteRemovido) {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
-  const novosPacientes = pacientesSalvos.filter((p) => p._id !== pacienteRemovido._id);
+  // comparar por 'id' (sem underscore) — era o bug
+  const novosPacientes = pacientesSalvos.filter((p) => p.id !== pacienteRemovido.id);
   localStorage.setItem("pacientes", JSON.stringify(novosPacientes));
 }
 
@@ -160,6 +165,57 @@ function editarPaciente(paciente, linha) {
 
   // optionally, focus the first input
   nomePaciente.focus();
+}
+
+function criaButtonConfirmar(){
+  const buttonConfirmar = document.createElement("button");
+  buttonConfirmar.id = "confirmar-remocao-btn";
+  buttonConfirmar.textContent = "Confirmar";
+  return buttonConfirmar;
+}
+
+function criaButtonCancelar(){
+  const buttonCancelar = document.createElement("button");
+  buttonCancelar.id = "cancelar-remocao-btn";
+  buttonCancelar.textContent = "Cancelar";
+  return buttonCancelar;
+}
+
+// nova versão: recebe o paciente e a linha (tr) e só remove no click do Confirmar
+function confirmarRemocao(paciente, tr) {
+  // criar modal simples
+  const container = document.createElement("div");
+  container.id = "div-remocao";
+
+  const box = document.createElement("div");
+  box.id = "box-remocao"
+
+  const h2 = document.createElement("h2");
+  h2.id = "remocao-h2";
+  h2.textContent = "Deseja mesmo remover paciente?";
+
+  const btnConfirmar = criaButtonConfirmar();
+  const btnCancelar = criaButtonCancelar();
+
+  // confirmar: remove row e do storage, fecha modal e verifica se esconde o container principal
+  btnConfirmar.addEventListener("click", () => {
+    tr.remove();
+    removerPacienteLocalStorage(paciente);
+    document.body.removeChild(container);
+    // hide container if no rows left
+    if (!tBody.querySelector("tr")) pacientesContainer.classList.add("hide");
+  });
+
+  btnCancelar.addEventListener("click", () => {
+    document.body.removeChild(container);
+  });
+
+  box.appendChild(h2);
+  // order: cancelar, confirmar (igual ao seu original, opcional)
+  box.appendChild(btnCancelar);
+  box.appendChild(btnConfirmar);
+  container.appendChild(box);
+  document.body.appendChild(container);
 }
 
 // initialize
