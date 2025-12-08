@@ -64,6 +64,7 @@ function adicionarPacienteNaTabela(paciente) {
 
   // edit event
   buttonEditar.addEventListener("click", () => {
+    cadastrarBtn.textContent = "Salvar alteração"
     editarPaciente(paciente, tr);
   });
 
@@ -108,6 +109,13 @@ document.addEventListener("keydown", (e) => {
 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  if(idadePaciente.value > 120){
+    const aviso = document.createElement("h2")
+    aviso.id = "aviso"
+    aviso.textContent = "idade invalida"
+    document.body.appendChild(aviso)
+    return 
+  }
   if (!validarCampos()) return;
   cadastrarPaciente();
 });
