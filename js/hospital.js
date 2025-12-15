@@ -9,6 +9,8 @@ const pacientesContainer = document.querySelector(".table");
 const table = document.querySelector(".table"); // outer table element (if you have one)
 const tBody = document.querySelector("#tbody"); // prefer appending rows to tbody
 
+const containerAviso = document.querySelector("#container-aviso")
+
 // load existing patients on page load
 function carregarPacientes() {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
@@ -107,15 +109,21 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
+  const aviso = document.createElement("h2")
+  aviso.id = "aviso"
+  aviso.textContent = "idade invalida"
+  aviso.classList.add("hide")
+
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if(idadePaciente.value > 120){
-    const aviso = document.createElement("h2")
-    aviso.id = "aviso"
-    aviso.textContent = "idade invalida"
-    document.body.appendChild(aviso)
-    return 
+    aviso.classList.remove("hide")
+    containerAviso.appendChild(aviso)
+    return  
+  } else{
+    aviso.classList.add("hide")
   }
+  
   if (!validarCampos()) return;
   cadastrarPaciente();
 });
