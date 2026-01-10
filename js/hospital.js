@@ -11,6 +11,29 @@ const tBody = document.querySelector("#tbody"); // prefer appending rows to tbod
 
 const containerAviso = document.querySelector("#container-aviso")
 
+const token = document.querySelector("#token")
+const tokenButton = document.querySelector("#confirmar-token")
+
+const painel = document.querySelector(".panel")
+const painel2 = document.querySelector(".panel2")
+
+
+
+painel.classList.add("hide")
+painel2.classList.add("hide")
+
+tokenButton.addEventListener("click", () =>{
+  const tokenValue = token.value
+  if(tokenValue === "Admin"){
+    [painel, painel2].forEach((p)=>{
+      p.classList.remove("hide")
+    })
+  } else {
+    console.log("MISTAKE")
+  }
+  token.value = ""
+})
+
 // load existing patients on page load
 function carregarPacientes() {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
