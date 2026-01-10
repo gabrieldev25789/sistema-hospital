@@ -30,12 +30,21 @@
     </aside>
 
     <main class="main">
+      <div id="container-aviso"></div>
+      <section>
+        <div id="token-session">
+            <h2>Confirmar administrador</h2>
+            <input type="text" id="token" placeholder="Digite o token de adm">
+            <button id="confirmar-token">Confrimar Token</button>
+        </div>    
+      </section>
+
       <section class="panel">
         <h2>Cadastro de Paciente</h2>
         <form id="patient-form" class="form">
           <div class="row">
             <label for="name">Nome</label>
-            <input id="name" name="name" type="text" placeholder="Nome completo" required />
+            <input id="name" name="name" type="text"  placeholder="Nome completo" required />
           </div>
 
           <div class="row">
@@ -64,37 +73,22 @@
         </form>
       </section>
 
-      <section class="panel">
+      <section class="panel2">
         <h2>Pacientes Cadastrados</h2>
 
         <!-- cartão translúcido por pseudo-elemento -->
         <div class="list-card">
-          <table class="table" id="patients-table">
+          <table class="table hide" id="patients-table">
             <thead>
               <tr>
                 <th>Nome</th>
                 <th>Idade</th>
                 <th>Gênero</th>
                 <th>Sintomas</th>
-                <th>Ação</th>
               </tr>
             </thead>
-            <tbody>
-              <!-- linhas adicionadas via JS — por enquanto exemplos estáticos -->
-              <tr>
-                <td>Maria Souza</td>
-                <td>34</td>
-                <td>F</td>
-                <td>Dor de cabeça</td>
-                <td><button class="btn small">Ver</button></td>
-              </tr>
-              <tr>
-                <td>João Pereira</td>
-                <td>45</td>
-                <td>M</td>
-                <td>Tosse</td>
-                <td><button class="btn small">Ver</button></td>
-              </tr>
+            <tbody id="tbody">
+         
             </tbody>
           </table>
         </div>
