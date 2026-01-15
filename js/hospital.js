@@ -17,7 +17,8 @@ const tokenButton = document.querySelector("#confirmar-token")
 const painel = document.querySelector(".panel")
 const painel2 = document.querySelector(".panel2")
 
-
+const olharLista = document.querySelector("#olhar-lista")
+const cardList = document.querySelector(".list-card")
 
 painel.classList.add("hide")
 painel2.classList.add("hide")
@@ -29,10 +30,12 @@ tokenButton.addEventListener("click", () =>{
       p.classList.remove("hide")
     })
   } else {
-    console.log("MISTAKE")
+  alert("Mistake")    
   }
   token.value = ""
 })
+
+
 
 // load existing patients on page load
 function carregarPacientes() {
@@ -44,6 +47,14 @@ function carregarPacientes() {
     pacientesContainer.classList.remove("hide");
   }
 }
+
+function MostrarLista(){
+  painel2.classList.remove("hide")
+}
+
+olharLista.addEventListener("click", () =>{
+  MostrarLista()
+})
 
 function criaButtonEditar() {
   const buttonEditar = document.createElement("button");
@@ -139,7 +150,7 @@ document.addEventListener("keydown", (e) => {
 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  if(idadePaciente.value > 120){
+  if(idadePaciente.value > 120 || idadePaciente.value <= 0){
     aviso.classList.remove("hide")
     containerAviso.appendChild(aviso)
     return  
@@ -150,6 +161,8 @@ cadastrarBtn.addEventListener("click", (e) => {
   if (!validarCampos()) return;
   cadastrarPaciente();
 });
+  
+
 
 function cadastrarPaciente() {
   pacientesContainer.classList.remove("hide");
