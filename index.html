@@ -32,11 +32,18 @@
     <main class="main">
       <div id="container-aviso"></div>
       <section>
+      <div id="opcoes">
         <div id="token-session">
             <h2>Confirmar administrador</h2>
             <input type="text" id="token" placeholder="Digite o token de adm">
             <button id="confirmar-token">Confrimar Token</button>
-        </div>    
+        </div> 
+        
+         <div id="lista-session">
+            <h2>Olhar lista de pacientes</h2>
+            <button id="olhar-lista">Olhar lista</button>
+        </div>  
+      </div> 
       </section>
 
       <section class="panel">
@@ -63,7 +70,7 @@
 
           <div class="row">
             <label for="symptoms">Sintomas</label>
-            <textarea id="symptoms" name="symptoms" rows="3" placeholder="Descreva os sintomas..."></textarea>
+            <textarea id="symptoms" name="symptoms" rows="3" placeholder="Descreva os sintomas..." maxlength="30"></textarea>
           </div>
 
           <div class="form-actions">
@@ -85,6 +92,7 @@
                 <th>Idade</th>
                 <th>Gênero</th>
                 <th>Sintomas</th>
+                <th>ID</th>
               </tr>
             </thead>
             <tbody id="tbody">
