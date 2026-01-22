@@ -11,6 +11,9 @@ const tBody = document.querySelector("#tbody"); // prefer appending rows to tbod
 
 const containerAviso = document.querySelector("#container-aviso")
 
+const tokenSession = document.querySelector("#token-session")
+const listaSession = document.querySelector("#lista-session") 
+
 const token = document.querySelector("#token")
 const tokenButton = document.querySelector("#confirmar-token")
 
@@ -24,16 +27,25 @@ painel.classList.add("hide")
 painel2.classList.add("hide")
 cardList.classList.add("hide")
 
+
 function confirmarToken(){
-const tokenValue = token.value
+  const tokenValue = token.value
   if(tokenValue === "Admin"){
-    [painel, painel2].forEach((p)=>{
-      p.classList.remove("hide")
-    })
+    tokenSession.classList.add("hide")
+    listaSession.classList.add("hide")
+    painel.classList.remove("hide")
+   
   } else {
   alert("Mistake")    
   }
+
+  if(!painel.classList.contains("hide") && !painel2.classList.contains("hide")){
+    [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
+  }
   token.value = ""
+  const tBodyLastChild = tBody.lastElementChild
+  const ButtonsContainer = tBodyLastChild.lastElementChild
+  ButtonsContainer.classList.remove("hide")
 }
 tokenButton.addEventListener("click", () =>{
   confirmarToken()
@@ -178,6 +190,7 @@ cadastrarBtn.addEventListener("click", (e) => {
   
 
 function cadastrarPaciente() {
+  painel2.classList.remove("hide")
   pacientesContainer.classList.remove("hide");
 
   // add a unique id to each patient (helps editing/removing reliably)
@@ -268,7 +281,7 @@ function confirmarRemocao(paciente, tr) {
     removerPacienteLocalStorage(paciente);
     document.body.removeChild(container);
     // hide container if no rows left
-    if (!tBody.querySelector("tr")) pacientesContainer.classList.add("hide");
+    if (!tBody.querySelector("tr")) pacientesContainer.classList.add("hide") 
   });
 
   btnCancelar.addEventListener("click", () => {
