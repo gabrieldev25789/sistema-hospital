@@ -22,9 +22,10 @@ const cardList = document.querySelector(".list-card")
 
 painel.classList.add("hide")
 painel2.classList.add("hide")
+cardList.classList.add("hide")
 
-tokenButton.addEventListener("click", () =>{
-  const tokenValue = token.value
+function confirmarToken(){
+const tokenValue = token.value
   if(tokenValue === "Admin"){
     [painel, painel2].forEach((p)=>{
       p.classList.remove("hide")
@@ -33,13 +34,15 @@ tokenButton.addEventListener("click", () =>{
   alert("Mistake")    
   }
   token.value = ""
+}
+tokenButton.addEventListener("click", () =>{
+  confirmarToken()
 })
 
-
-
 // load existing patients on page load
+const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
+
 function carregarPacientes() {
-  const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
   pacientesSalvos.forEach((paciente) => {
     adicionarPacienteNaTabela(paciente);
   });
@@ -47,14 +50,6 @@ function carregarPacientes() {
     pacientesContainer.classList.remove("hide");
   }
 }
-
-function MostrarLista(){
-  painel2.classList.remove("hide")
-}
-
-olharLista.addEventListener("click", () =>{
-  MostrarLista()
-})
 
 function criaButtonEditar() {
   const buttonEditar = document.createElement("button");
@@ -91,7 +86,7 @@ function adicionarPacienteNaTabela(paciente) {
   // <-- buttonRemover MUST be criado por linha
   const buttonRemover = document.createElement("button");
   buttonRemover.classList.add("btn-remove");
-  buttonRemover.textContent = "X";
+  buttonRemover.textContent = "Remover";
 
   // remove event: abrir modal de confirmação que, ao confirmar, remove a linha e do storage
   buttonRemover.addEventListener("click", () => {
@@ -118,7 +113,26 @@ function adicionarPacienteNaTabela(paciente) {
   // append to tbody (preferred) or table as fallback
   if (tBody) tBody.appendChild(tr);
   else table.appendChild(tr);
+  cardList.classList.remove("hide")
 }
+
+function MostrarLista() {
+  /*const buttonEditar = criaButtonEditar()*/
+  const tBodyLastChild = tBody.lastElementChild
+  const ButtonsContainer = tBodyLastChild.lastElementChild
+  ButtonsContainer.classList.add("hide")
+
+  painel2.classList.remove("hide");
+  /*buttonEditar.classList.add("hide")*/
+  
+  if (pacientesSalvos.length === 0) {
+    painel2.classList.add("hide")
+  }
+}
+
+olharLista.addEventListener("click", () =>{
+  MostrarLista()
+})
 
 function validarCampos() {
   // return true if valid, false otherwise
@@ -162,7 +176,6 @@ cadastrarBtn.addEventListener("click", (e) => {
   cadastrarPaciente();
 });
   
-
 
 function cadastrarPaciente() {
   pacientesContainer.classList.remove("hide");
