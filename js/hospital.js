@@ -23,16 +23,17 @@ const painel2 = document.querySelector(".panel2")
 const olharLista = document.querySelector("#olhar-lista")
 const cardList = document.querySelector(".list-card")
 
-painel.classList.add("hide")
-painel2.classList.add("hide")
-cardList.classList.add("hide")
 
+if(cardList)[painel, painel2, cardList].forEach((el) => el.classList.add("hide"))
+
+nomePaciente.addEventListener("input", () => {
+  nomePaciente.value = nomePaciente.value.replace(/\d/g, "")
+});
 
 function confirmarToken(){
   const tokenValue = token.value
   if(tokenValue === "Admin"){
-    tokenSession.classList.add("hide")
-    listaSession.classList.add("hide")
+    [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
     painel.classList.remove("hide")   
   } else {
   alert("Mistake")    
@@ -116,12 +117,7 @@ function adicionarPacienteNaTabela(paciente) {
   tdActions.appendChild(buttonRemover);
 
   // append cells to row
-  tr.appendChild(tdNome);
-  tr.appendChild(tdIdade);
-  tr.appendChild(tdGenero);
-  tr.appendChild(tdSintoma);
-  tr.appendChild(tdId);
-  tr.appendChild(tdActions);
+  tr.append(tdNome, tdIdade, tdGenero, tdSintoma, tdId, tdActions);
 
   // append to tbody (preferred) or table as fallback
   if (tBody) tBody.appendChild(tr);
@@ -130,13 +126,11 @@ function adicionarPacienteNaTabela(paciente) {
 }
 
 function MostrarLista() {
-  /*const buttonEditar = criaButtonEditar()*/
   const tBodyLastChild = tBody.lastElementChild
   const ButtonsContainer = tBodyLastChild.lastElementChild
   ButtonsContainer.classList.add("hide")
 
   painel2.classList.remove("hide");
-  /*buttonEditar.classList.add("hide")*/
   
   if (pacientesSalvos.length === 0) {
     painel2.classList.add("hide")
@@ -155,7 +149,6 @@ function validarCampos() {
     !generoSelect.value.trim() ||
     !sintomas.value.trim()
   ) {
-    console.log("Campos incompletos");
     return false;
   }
   return true;
