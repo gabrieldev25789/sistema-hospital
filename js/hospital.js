@@ -35,6 +35,7 @@ function confirmarToken(){
   if(tokenValue === "Admin"){
     [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
     painel.classList.remove("hide")   
+    painel2.classList.remove("hide")
   } else {
   alert("Mistake")    
   }
@@ -47,6 +48,7 @@ function confirmarToken(){
   const ButtonsContainer = tBodyLastChild.lastElementChild
   ButtonsContainer.classList.remove("hide")
 }
+
 tokenButton.addEventListener("click", () =>{
   confirmarToken()
 })
@@ -160,6 +162,7 @@ document.addEventListener("keydown", (e) => {
     // prevent form submit default if inside <form>
     e.preventDefault();
     if (validarCampos()) cadastrarPaciente();
+    if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
   }
 });
 
@@ -183,7 +186,6 @@ cadastrarBtn.addEventListener("click", (e) => {
   cadastrarPaciente();
 });
   
-
 function cadastrarPaciente() {
   painel2.classList.remove("hide")
   pacientesContainer.classList.remove("hide");
