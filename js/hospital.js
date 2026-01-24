@@ -33,8 +33,7 @@ function confirmarToken(){
   if(tokenValue === "Admin"){
     tokenSession.classList.add("hide")
     listaSession.classList.add("hide")
-    painel.classList.remove("hide")
-   
+    painel.classList.remove("hide")   
   } else {
   alert("Mistake")    
   }
@@ -81,6 +80,8 @@ function criaTr(){
   return tr;
 }
 
+  let estagio
+
 function adicionarPacienteNaTabela(paciente) {
   // create row and cells
   const tr = criaTr();
@@ -107,7 +108,7 @@ function adicionarPacienteNaTabela(paciente) {
 
   // edit event
   buttonEditar.addEventListener("click", () => {
-    cadastrarBtn.textContent = "Salvar alteração"
+    estagio = 1
     editarPaciente(paciente, tr);
   });
 
@@ -183,7 +184,8 @@ cadastrarBtn.addEventListener("click", (e) => {
   } else{
     aviso.classList.add("hide")
   }
-  
+  if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
+
   if (!validarCampos()) return;
   cadastrarPaciente();
 });
@@ -207,6 +209,8 @@ function cadastrarPaciente() {
   limparCampos();
 }
 
+const limparBtn = document.querySelector("#reset-btn")
+
 function salvarPacienteLocalStorage(paciente) {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
   pacientesSalvos.push(paciente);
@@ -227,7 +231,9 @@ function limparCampos() {
   sintomas.value = "";
 }
 
-function editarPaciente(paciente, linha) {
+function editarPaciente(paciente, linha) {  
+  estagio = 2 
+  cadastrarBtn.textContent = "Salvar alteração"
   // fill fields
   nomePaciente.value = paciente.nome;
   idadePaciente.value = paciente.idade;
@@ -243,6 +249,7 @@ function editarPaciente(paciente, linha) {
 
   // optionally, focus the first input
   nomePaciente.focus();
+  [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
 }
 
 function criaButtonConfirmar(){
@@ -281,7 +288,7 @@ function confirmarRemocao(paciente, tr) {
     removerPacienteLocalStorage(paciente);
     document.body.removeChild(container);
     // hide container if no rows left
-    if (!tBody.querySelector("tr")) pacientesContainer.classList.add("hide") 
+    if (!tBody.querySelector("tr")) painel2.classList.add("hide") 
   });
 
   btnCancelar.addEventListener("click", () => {
