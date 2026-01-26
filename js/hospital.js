@@ -44,9 +44,11 @@ function confirmarToken(){
     [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
   }
   token.value = ""
-  const tBodyLastChild = tBody.lastElementChild
-  const ButtonsContainer = tBodyLastChild.lastElementChild
-  ButtonsContainer.classList.remove("hide")
+
+    const tBodyAll = tBody.querySelectorAll("tr")
+    tBodyAll.forEach((el)=>{
+    el.lastChild.classList.remove("hide")
+  })
 }
 
 tokenButton.addEventListener("click", () =>{
@@ -128,9 +130,10 @@ function adicionarPacienteNaTabela(paciente) {
 }
 
 function MostrarLista() {
-  const tBodyLastChild = tBody.lastElementChild
-  const ButtonsContainer = tBodyLastChild.lastElementChild
-  ButtonsContainer.classList.add("hide")
+  const tBodyAll = tBody.querySelectorAll("tr")
+  tBodyAll.forEach((el)=>{
+    el.lastChild.classList.add("hide")
+  })
 
   painel2.classList.remove("hide");
   
