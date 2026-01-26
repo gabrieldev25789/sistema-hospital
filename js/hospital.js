@@ -37,13 +37,16 @@ function confirmarToken(){
     painel.classList.remove("hide")   
     painel2.classList.remove("hide")
   } else {
-  alert("Mistake")    
+  alert("Mistake") 
+  return    
   }
 
   if(!painel.classList.contains("hide") && !painel2.classList.contains("hide")){
     [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
   }
   token.value = ""
+
+  if(cardList.classList.contains("hide")) painel2.classList.add("hide")
 
     const tBodyAll = tBody.querySelectorAll("tr")
     tBodyAll.forEach((el)=>{
