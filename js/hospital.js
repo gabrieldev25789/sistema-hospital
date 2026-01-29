@@ -9,7 +9,7 @@ const pacientesContainer = document.querySelector(".table");
 const table = document.querySelector(".table"); // outer table element (if you have one)
 const tBody = document.querySelector("#tbody"); // prefer appending rows to tbody
 
-const containerAviso = document.querySelector("#container-aviso")
+const aviso = document.querySelector("#aviso")
 
 const tokenSession = document.querySelector("#token-session")
 const listaSession = document.querySelector("#lista-session") 
@@ -170,30 +170,34 @@ olharLista.addEventListener("click", () =>{
   MostrarLista()
 })
 
-
 function validarCampos() {
   // return true if valid, false otherwise
+  aviso.classList.add("hide")
   if(!nomePaciente.value.trim()){
-    alert("Preencha o campo nome")
+    aviso.classList.remove("hide")
+    aviso.textContent = "Preencha o campo nome"
     return false 
   } 
   if(!idadePaciente.value.trim()) {
-    alert("Preencha o campo idade")
+    aviso.classList.remove("hide")
+    aviso.textContent = "Preencha o campo idade"
     return false 
   }
   if(idadePaciente.value > 120 || idadePaciente.value < 0){
-    alert("Idade inválida")
+    aviso.classList.remove("hide")
+    aviso.textContent = "Idade inválida"
     return false 
   }
   if(!generoSelect.value.trim()) {
-    alert("Preencha o campo gênero")
+    aviso.classList.remove("hide")
+    aviso.textContent = "Preencha o campo gênero"
     return false 
   }
   if(!sintomas.value.trim()) {
-    alert("Preencha o campo Sintomas")
+    aviso.classList.remove("hide")
+    aviso.textContent = "Preencha o campo sintomas"
     return false 
   }
-
   return true 
 }
 
