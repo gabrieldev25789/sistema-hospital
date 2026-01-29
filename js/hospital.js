@@ -21,8 +21,15 @@ const painel = document.querySelector(".panel")
 const painel2 = document.querySelector(".panel2")
 
 const olharLista = document.querySelector("#pacientes")
+const dashboard = document.querySelector("#dashboard")
+
 const cardList = document.querySelector(".list-card")
 
+dashboard.addEventListener("click", () =>{
+  tokenSession.classList.remove("hide")
+  painel.classList.add("hide")
+  painel2.classList.add("hide")  
+})
 
 if(cardList)[painel, painel2, cardList].forEach((el) => el.classList.add("hide"))
 
@@ -159,6 +166,7 @@ function MostrarLista() {
     el.lastChild.classList.add("hide")
   })
 
+  painel.classList.add("hide")
   painel2.classList.remove("hide");
   
   if (pacientesSalvos.length === 0) {
