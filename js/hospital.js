@@ -20,7 +20,7 @@ const tokenButton = document.querySelector("#confirmar-token")
 const painel = document.querySelector(".panel")
 const painel2 = document.querySelector(".panel2")
 
-const olharLista = document.querySelector("#olhar-lista")
+const olharLista = document.querySelector("#pacientes")
 const cardList = document.querySelector(".list-card")
 
 
@@ -33,7 +33,7 @@ nomePaciente.addEventListener("input", () => {
 function confirmarToken(){
   const tokenValue = token.value
   if(tokenValue === "Admin"){
-    [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
+    tokenSession.classList.add("hide")
     painel.classList.remove("hide")   
     painel2.classList.remove("hide")
   } else {
@@ -42,7 +42,7 @@ function confirmarToken(){
   }
 
   if(!painel.classList.contains("hide") && !painel2.classList.contains("hide")){
-    [tokenSession, listaSession].forEach((el)=> el.classList.add("hide"))
+    tokenSession.classList.add("hide")
   }
   token.value = ""
 
@@ -215,8 +215,7 @@ document.addEventListener("keydown", (e) => {
     if (validarCampos()) cadastrarPaciente();
     if(estagio === 2) cadastrarBtn.textContent = "Cadastrar" 
   }
-});
-
+})
 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
