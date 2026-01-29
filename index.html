@@ -15,6 +15,10 @@
     </div>
   </header>
 
+      <div id="container-aviso">
+        <h2 id="aviso" class="hide"></h2>
+      </div>
+ 
   <div class="container">
     <aside class="sidebar">
       <nav>
@@ -30,7 +34,6 @@
     </aside>
 
     <main class="main">
-      <div id="container-aviso"></div>
       <section>
       <div id="opcoes">
         <div id="token-session">
@@ -51,7 +54,7 @@
         <form id="patient-form" class="form">
           <div class="row">
             <label for="name">Nome</label>
-            <input id="name" name="name" type="text"  placeholder="Nome completo" required />
+            <input id="name" name="name" maxlength="80" pattern="^[^\d]*$" type="text"  placeholder="Nome completo" required />
           </div>
 
           <div class="row">
@@ -70,12 +73,12 @@
 
           <div class="row">
             <label for="symptoms">Sintomas</label>
-            <textarea id="symptoms" name="symptoms" rows="3" placeholder="Descreva os sintomas..." maxlength="30"></textarea>
+            <textarea id="symptoms" name="symptoms" rows="3" placeholder="Descreva os sintomas... (resumo)" maxlength="30"></textarea>
           </div>
 
           <div class="form-actions">
             <button type="submit" class="cadastrar-btn">Cadastrar</button>
-            <button type="reset" class="btn">Limpar</button>
+            <button type="reset" id="reset-btn" class="btn">Limpar</button>
           </div>
         </form>
       </section>
