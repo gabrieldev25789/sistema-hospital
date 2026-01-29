@@ -170,35 +170,41 @@ olharLista.addEventListener("click", () =>{
   MostrarLista()
 })
 
+function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
+ 
+  if(!valor){
+    texto.classList.remove("hide")
+    texto.textContent = `Preencha o campo ${nomeCampo}`
+    return true
+  }
+
+  if(tipo === "idade"){
+    const idade = Number(valor)
+
+    if(Number.isNaN(idade) || idade < 0 || idade > 120){
+      texto.classList.remove("hide")
+      texto.textContent = "Idade inválida"
+      return true
+    }
+  }
+
+  return false
+}
+
+
 function validarCampos() {
-  // return true if valid, false otherwise
   aviso.classList.add("hide")
-  if(!nomePaciente.value.trim()){
-    aviso.classList.remove("hide")
-    aviso.textContent = "Preencha o campo nome"
-    return false 
-  } 
-  if(!idadePaciente.value.trim()) {
-    aviso.classList.remove("hide")
-    aviso.textContent = "Preencha o campo idade"
-    return false 
+
+  if(
+    mostrarErro(nomePaciente.value.trim(), aviso, "nome") ||
+    mostrarErro(idadePaciente.value.trim(), aviso, "idade", "idade") || 
+    mostrarErro(generoSelect.value.trim(), aviso, "gênero") || 
+    mostrarErro(sintomas.value.trim(), aviso, "sintomas")
+  ){
+    return false
   }
-  if(idadePaciente.value > 120 || idadePaciente.value < 0){
-    aviso.classList.remove("hide")
-    aviso.textContent = "Idade inválida"
-    return false 
-  }
-  if(!generoSelect.value.trim()) {
-    aviso.classList.remove("hide")
-    aviso.textContent = "Preencha o campo gênero"
-    return false 
-  }
-  if(!sintomas.value.trim()) {
-    aviso.classList.remove("hide")
-    aviso.textContent = "Preencha o campo sintomas"
-    return false 
-  }
-  return true 
+
+  return true
 }
 
 // handle Enter key on inputs (use keydown, not click)
