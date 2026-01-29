@@ -115,6 +115,27 @@ function adicionarPacienteNaTabela(paciente) {
   });
 
   // edit event
+function editarPaciente(paciente, linha) {  
+  estagio = 2 
+  cadastrarBtn.textContent = "Salvar alteração"
+  // fill fields
+  nomePaciente.value = paciente.nome;
+  idadePaciente.value = paciente.idade;
+  generoSelect.value = paciente.genero;
+  sintomas.value = paciente.sintomas;
+
+  // hide list while editing
+  pacientesContainer.classList.add("hide");
+
+  // remove the row and remove from storage so save will re-add edited version
+  linha.remove();
+  removerPacienteLocalStorage(paciente);
+
+  // optionally, focus the first input
+  nomePaciente.focus();
+  [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
+}
+
   buttonEditar.addEventListener("click", () => {
     estagio = 1
     editarPaciente(paciente, tr);
@@ -149,17 +170,31 @@ olharLista.addEventListener("click", () =>{
   MostrarLista()
 })
 
+
 function validarCampos() {
   // return true if valid, false otherwise
-  if (
-    !nomePaciente.value.trim() ||
-    !idadePaciente.value.trim() ||
-    !generoSelect.value.trim() ||
-    !sintomas.value.trim()
-  ) {
-    return false;
+  if(!nomePaciente.value.trim()){
+    alert("Preencha o campo nome")
+    return false 
+  } 
+  if(!idadePaciente.value.trim()) {
+    alert("Preencha o campo idade")
+    return false 
   }
-  return true;
+  if(idadePaciente.value > 120 || idadePaciente.value < 0){
+    alert("Idade inválida")
+    return false 
+  }
+  if(!generoSelect.value.trim()) {
+    alert("Preencha o campo gênero")
+    return false 
+  }
+  if(!sintomas.value.trim()) {
+    alert("Preencha o campo Sintomas")
+    return false 
+  }
+
+  return true 
 }
 
 // handle Enter key on inputs (use keydown, not click)
@@ -168,27 +203,19 @@ document.addEventListener("keydown", (e) => {
     // prevent form submit default if inside <form>
     e.preventDefault();
     if (validarCampos()) cadastrarPaciente();
-    if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
+    if(estagio === 2) cadastrarBtn.textContent = "Cadastrar" 
   }
 });
 
-  const aviso = document.createElement("h2")
-  aviso.id = "aviso"
-  aviso.textContent = "idade invalida"
-  aviso.classList.add("hide")
 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  if(idadePaciente.value > 120 || idadePaciente.value <= 0){
-    aviso.classList.remove("hide")
-    containerAviso.appendChild(aviso)
-    return  
-  } else{
-    aviso.classList.add("hide")
-  }
+  
   if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
 
-  if (!validarCampos()) return;
+  if (!validarCampos()){
+    return;
+  } 
   cadastrarPaciente();
 });
   
@@ -230,27 +257,6 @@ function limparCampos() {
   idadePaciente.value = "";
   generoSelect.value = "";
   sintomas.value = "";
-}
-
-function editarPaciente(paciente, linha) {  
-  estagio = 2 
-  cadastrarBtn.textContent = "Salvar alteração"
-  // fill fields
-  nomePaciente.value = paciente.nome;
-  idadePaciente.value = paciente.idade;
-  generoSelect.value = paciente.genero;
-  sintomas.value = paciente.sintomas;
-
-  // hide list while editing
-  pacientesContainer.classList.add("hide");
-
-  // remove the row and remove from storage so save will re-add edited version
-  linha.remove();
-  removerPacienteLocalStorage(paciente);
-
-  // optionally, focus the first input
-  nomePaciente.focus();
-  [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
 }
 
 function criaButtonConfirmar(){
@@ -305,4 +311,4 @@ function confirmarRemocao(paciente, tr) {
 }
 
 // initialize
-carregarPacientes();
+carregarPacientes()
