@@ -22,13 +22,18 @@ const painel2 = document.querySelector(".panel2")
 
 const olharLista = document.querySelector("#pacientes")
 const dashboard = document.querySelector("#dashboard")
+const medicos = document.querySelector("#medicos")
 
 const cardList = document.querySelector(".list-card")
 
+const sideBar = document.querySelector(".sidebar")
+
+const resetBtn = document.querySelector("#reset-btn")
+
 dashboard.addEventListener("click", () =>{
+  [aviso, painel, painel2].forEach((el)=> el.classList.add("hide"))
+
   tokenSession.classList.remove("hide")
-  painel.classList.add("hide")
-  painel2.classList.add("hide")  
 })
 
 if(cardList)[painel, painel2, cardList].forEach((el) => el.classList.add("hide"))
@@ -41,8 +46,17 @@ function confirmarToken(){
   const tokenValue = token.value
   if(tokenValue === "Admin"){
     tokenSession.classList.add("hide")
-    painel.classList.remove("hide")   
-    painel2.classList.remove("hide")
+    painel.classList.remove("hide")  
+    painel2.classList.add("hide")
+
+  const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+
+  if(pacientes.length > 0) {
+  painel2.classList.remove("hide");
+  } else {
+    painel2.classList.add("hide");
+  }
+
   } else {
   alert("Mistake") 
   return    
@@ -79,7 +93,8 @@ function carregarPacientes() {
 
 function criaButtonEditar() {
   const buttonEditar = document.createElement("button");
-  buttonEditar.classList.add("btn-edit");
+  buttonEditar.classList.add("btn");
+  buttonEditar.id = "btn-edit"
   buttonEditar.textContent = "Editar";
   return buttonEditar;
 }
@@ -113,7 +128,8 @@ function adicionarPacienteNaTabela(paciente) {
 
   // <-- buttonRemover MUST be criado por linha
   const buttonRemover = document.createElement("button");
-  buttonRemover.classList.add("btn-remove");
+  buttonRemover.classList.add("btn")
+  buttonRemover.id = "btn-remove"
   buttonRemover.textContent = "Remover";
 
   // remove event: abrir modal de confirmação que, ao confirmar, remove a linha e do storage
@@ -123,6 +139,7 @@ function adicionarPacienteNaTabela(paciente) {
 
   // edit event
 function editarPaciente(paciente, linha) {  
+  sideBar.classList.add("hidden")
   estagio = 2 
   cadastrarBtn.textContent = "Salvar alteração"
   // fill fields
@@ -167,11 +184,13 @@ function MostrarLista() {
   })
 
   painel.classList.add("hide")
-  painel2.classList.remove("hide");
   
-  if (pacientesSalvos.length === 0) {
-    painel2.classList.add("hide")
+ const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+
+  if(pacientes.length === 0) {
+  painel2.classList.add("hide");
   }
+
 }
 
 olharLista.addEventListener("click", () =>{
@@ -237,6 +256,8 @@ cadastrarBtn.addEventListener("click", (e) => {
 });
   
 function cadastrarPaciente() {
+  resetBtn.classList.remove("hide")
+  sideBar.classList.remove("hidden")
   painel2.classList.remove("hide")
   pacientesContainer.classList.remove("hide");
 
@@ -278,6 +299,7 @@ function limparCampos() {
 
 function criaButtonConfirmar(){
   const buttonConfirmar = document.createElement("button");
+  buttonConfirmar.classList.add("CC-btn")
   buttonConfirmar.id = "confirmar-remocao-btn";
   buttonConfirmar.textContent = "Confirmar";
   return buttonConfirmar;
@@ -285,6 +307,7 @@ function criaButtonConfirmar(){
 
 function criaButtonCancelar(){
   const buttonCancelar = document.createElement("button");
+  buttonCancelar.classList.add("CC-btn")
   buttonCancelar.id = "cancelar-remocao-btn";
   buttonCancelar.textContent = "Cancelar";
   return buttonCancelar;
@@ -329,3 +352,5 @@ function confirmarRemocao(paciente, tr) {
 
 // initialize
 carregarPacientes()
+
+
