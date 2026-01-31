@@ -30,6 +30,8 @@ const sideBar = document.querySelector(".sidebar")
 
 const resetBtn = document.querySelector("#reset-btn")
 
+const containerAviso = document.querySelector("#container-aviso")
+
 dashboard.addEventListener("click", () =>{
   [aviso, painel, painel2].forEach((el)=> el.classList.add("hide"))
 
@@ -188,8 +190,16 @@ function MostrarLista() {
  const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 
   if(pacientes.length === 0) {
+  tokenSession.classList.remove("hide")
+  painel.classList.add("hide")
   painel2.classList.add("hide");
-  }
+  aviso.classList.remove("hide")
+  aviso.textContent = "Sem pacientes cadastrados"
+
+  setTimeout(()=>{
+    aviso.classList.add("hide")
+  },1000)
+}
 
 }
 
@@ -217,7 +227,6 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
 
   return false
 }
-
 
 function validarCampos() {
   aviso.classList.add("hide")
