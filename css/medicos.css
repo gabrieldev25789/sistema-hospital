@@ -1,3 +1,110 @@
-body{
-    background-color: gray;
+/* Página médicos */
+#pagina-medicos {
+  width: 100%;
+  min-height: 100vh;
+  background: #f3f6f9;
 }
+
+#pagina-medicos h2 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 24px 0;
+  color: #111;
+}
+
+/* Container vira coluna */
+.medicos-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card ocupa a tela inteira */
+.medico-card {
+  min-height: 99vh;
+  width: 96%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+
+  padding: 40px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Foto grande */
+.medico-card img {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Informações */
+.medico-info {
+  max-width: 400px;
+}
+
+.medico-info h3 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: #111;
+}
+
+.medico-info p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.medico-info span {
+  font-size: 1rem;
+  color: #888;
+}
+
+@media (max-width: 768px) {
+  #pagina-medicos h2 {
+    font-size: 1.8rem;
+    padding: 20px 0;
+  }
+
+  .medico-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 28px;
+    padding: 28px 20px;
+  }
+
+  .medico-card img {
+    width: 220px;
+    height: 220px;
+  }
+
+  .medico-info h3 {
+    font-size: 1.7rem;
+  }
+
+  .medico-info p {
+    font-size: 1.1rem;
+  }
+
+  .medico-info span {
+    font-size: 0.95rem;
+  }
+}
+
+/* ===============================
+   Mobile pequeno
+================================ */
+@media (max-width: 480px) {
+  .medico-card img {
+    width: 190px;
+    height: 190px;
+  }
+
+  .medico-info h3 {
+    font-size: 1.5rem;
+  }
+}
+
