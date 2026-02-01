@@ -6,8 +6,8 @@ const generoSelect = document.querySelector("#gender");
 const sintomas = document.querySelector("#symptoms");
 
 const pacientesContainer = document.querySelector(".table");
-const table = document.querySelector(".table"); // outer table element (if you have one)
-const tBody = document.querySelector("#tbody"); // prefer appending rows to tbody
+const table = document.querySelector(".table"); 
+const tBody = document.querySelector("#tbody"); 
 
 const aviso = document.querySelector("#aviso")
 
@@ -60,7 +60,8 @@ function confirmarToken(){
   }
 
   } else {
-  alert("Mistake") 
+    aviso.classList.remove("hide")
+
   return    
   }
 
@@ -81,7 +82,7 @@ tokenButton.addEventListener("click", () =>{
   confirmarToken()
 })
 
-// load existing patients on page load
+
 const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
 
 function carregarPacientes() {
@@ -115,49 +116,42 @@ function criaTr(){
   let estagio
 
 function adicionarPacienteNaTabela(paciente) {
-  // create row and cells
+  
   const tr = criaTr();
 
   const tdNome = criarTd(paciente.nome);
   const tdIdade = criarTd(paciente.idade);
   const tdGenero = criarTd(paciente.genero);
   const tdSintoma = criarTd(paciente.sintomas);
-  const tdId = criarTd(paciente.id ?? ""); // show id if exists
+  const tdId = criarTd(paciente.id ?? ""); 
 
-  // buttons in their own td
   const tdActions = document.createElement("td");
   const buttonEditar = criaButtonEditar();
 
-  // <-- buttonRemover MUST be criado por linha
   const buttonRemover = document.createElement("button");
   buttonRemover.classList.add("btn")
   buttonRemover.id = "btn-remove"
   buttonRemover.textContent = "Remover";
 
-  // remove event: abrir modal de confirmação que, ao confirmar, remove a linha e do storage
   buttonRemover.addEventListener("click", () => {
     confirmarRemocao(paciente, tr);
   });
 
-  // edit event
 function editarPaciente(paciente, linha) {  
   sideBar.classList.add("hidden")
   estagio = 2 
   cadastrarBtn.textContent = "Salvar alteração"
-  // fill fields
+
   nomePaciente.value = paciente.nome;
   idadePaciente.value = paciente.idade;
   generoSelect.value = paciente.genero;
   sintomas.value = paciente.sintomas;
 
-  // hide list while editing
   pacientesContainer.classList.add("hide");
 
-  // remove the row and remove from storage so save will re-add edited version
   linha.remove();
   removerPacienteLocalStorage(paciente);
 
-  // optionally, focus the first input
   nomePaciente.focus();
   [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
 }
@@ -170,10 +164,8 @@ function editarPaciente(paciente, linha) {
   tdActions.appendChild(buttonEditar);
   tdActions.appendChild(buttonRemover);
 
-  // append cells to row
   tr.append(tdNome, tdIdade, tdGenero, tdSintoma, tdId, tdActions);
 
-  // append to tbody (preferred) or table as fallback
   if (tBody) tBody.appendChild(tr);
   else table.appendChild(tr);
   cardList.classList.remove("hide")
@@ -196,11 +188,10 @@ function MostrarLista() {
   aviso.classList.remove("hide")
   aviso.textContent = "Sem pacientes cadastrados"
 
-  setTimeout(()=>{
+    setTimeout(()=>{
     aviso.classList.add("hide")
-  },1000)
-}
-
+    },1000)
+  }
 }
 
 olharLista.addEventListener("click", () =>{
@@ -243,25 +234,52 @@ function validarCampos() {
   return true
 }
 
-// handle Enter key on inputs (use keydown, not click)
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Enter") {
-    // prevent form submit default if inside <form>
-    e.preventDefault();
-    if (validarCampos()) cadastrarPaciente();
-    if(estagio === 2) cadastrarBtn.textContent = "Cadastrar" 
+function validToken() {
+  const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+
+  if (pacientes.length === 0) {
+    painel2.classList.add("hide");
+  } else {
+    painel2.classList.remove("hide");
   }
-})
+
+  if (
+    painel.classList.contains("hide") &&
+    !tokenSession.classList.contains("hide") &&
+    token.value === ""
+  ) {
+    aviso.classList.remove("hide");
+    aviso.textContent = "Preencha o token";
+
+    setTimeout(() => aviso.classList.add("hide"), 1000);
+    return false;
+  }
+
+  if (token.value !== "Admin") {
+    aviso.classList.remove("hide");
+    aviso.textContent = "Token inválido";
+
+    setTimeout(() => aviso.classList.add("hide"), 1000);
+    return false;
+  }
+
+  // token válido
+  aviso.classList.add("hide");
+  tokenSession.classList.add("hide");
+  painel.classList.remove("hide");
+
+  return true;
+}
+
 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
   
+
+  if (validarCampos()) cadastrarPaciente();
+
   if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
 
-  if (!validarCampos()){
-    return;
-  } 
-  cadastrarPaciente();
 });
   
 function cadastrarPaciente() {
@@ -270,7 +288,6 @@ function cadastrarPaciente() {
   painel2.classList.remove("hide")
   pacientesContainer.classList.remove("hide");
 
-  // add a unique id to each patient (helps editing/removing reliably)
   const paciente = {
     id: Date.now().toString(),
     nome: nomePaciente.value.trim(),
@@ -322,9 +339,7 @@ function criaButtonCancelar(){
   return buttonCancelar;
 }
 
-// nova versão: recebe o paciente e a linha (tr) e só remove no click do Confirmar
 function confirmarRemocao(paciente, tr) {
-  // criar modal simples
   const container = document.createElement("div");
   container.id = "div-remocao";
 
@@ -338,7 +353,6 @@ function confirmarRemocao(paciente, tr) {
   const btnConfirmar = criaButtonConfirmar();
   const btnCancelar = criaButtonCancelar();
 
-  // confirmar: remove row e do storage, fecha modal e verifica se esconde o container principal
   btnConfirmar.addEventListener("click", () => {
     tr.remove();
     removerPacienteLocalStorage(paciente);
@@ -352,14 +366,12 @@ function confirmarRemocao(paciente, tr) {
   });
 
   box.appendChild(h2);
-  // order: cancelar, confirmar (igual ao seu original, opcional)
   box.appendChild(btnCancelar);
   box.appendChild(btnConfirmar);
   container.appendChild(box);
   document.body.appendChild(container);
 }
 
-// initialize
 carregarPacientes()
 
 
