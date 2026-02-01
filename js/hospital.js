@@ -32,18 +32,22 @@ const resetBtn = document.querySelector("#reset-btn")
 
 const containerAviso = document.querySelector("#container-aviso")
 
+// EVENTO DO DASHBOARD
 dashboard.addEventListener("click", () =>{
   [aviso, painel, painel2].forEach((el)=> el.classList.add("hide"))
 
   tokenSession.classList.remove("hide")
 })
 
+// Se cardList existir, oculta o painel, o painel2 e a lista de cards
 if(cardList)[painel, painel2, cardList].forEach((el) => el.classList.add("hide"))
 
+// Evitar numeros no nome 
 nomePaciente.addEventListener("input", () => {
   nomePaciente.value = nomePaciente.value.replace(/\d/g, "")
 });
 
+// FUNÇÃO DE CONFIRMAR TOKEN 
 function confirmarToken() {
   const tokenValue = token.value.trim()
 
@@ -69,9 +73,8 @@ function confirmarToken() {
     return
   }
 
-  
+// MOSTRAR AVISO CASO O TOKEN ESTEJA CERTO 
   mostrarAviso("Acesso permitido", true)
-
   tokenSession.classList.add("hide")
   painel.classList.remove("hide")
 
@@ -89,13 +92,14 @@ function confirmarToken() {
   })
 }
 
+// EVENTO DE CONFIRMAR TOKEN 
 tokenButton.addEventListener("click", () =>{
   confirmarToken()
 })
 
-
 const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
 
+// FUNÇÃO DE CARREGAR PACIENTES 
 function carregarPacientes() {
   pacientesSalvos.forEach((paciente) => {
     adicionarPacienteNaTabela(paciente);
@@ -105,6 +109,7 @@ function carregarPacientes() {
   }
 }
 
+// CRIA BUTTON DE EDITAR 
 function criaButtonEditar() {
   const buttonEditar = document.createElement("button");
   buttonEditar.classList.add("btn");
@@ -113,19 +118,23 @@ function criaButtonEditar() {
   return buttonEditar;
 }
 
+// CRIA TD 
 function criarTd(text = "") {
   const td = document.createElement("td");
   td.textContent = text;
   return td;
 }
 
+// CRIA TR 
 function criaTr(){
   const tr = document.createElement("tr");
   return tr;
 }
 
-  let estagio
+// VARIAVEL PARA ALTERAR O TEXTO DO BTN DE CADASTRAR  
+let estagio
 
+// ADICIONAR PACIENTE NA TABELA 
 function adicionarPacienteNaTabela(paciente) {
   
   const tr = criaTr();
@@ -148,6 +157,7 @@ function adicionarPacienteNaTabela(paciente) {
     confirmarRemocao(paciente, tr);
   });
 
+// EDITAR PACIENTE  
 function editarPaciente(paciente, linha) {  
   sideBar.classList.add("hidden")
   estagio = 2 
@@ -167,32 +177,34 @@ function editarPaciente(paciente, linha) {
   [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
 }
 
-  buttonEditar.addEventListener("click", () => {
+// EVENTO DE EDITAR PACIENTE 
+buttonEditar.addEventListener("click", () => {
     estagio = 1
     editarPaciente(paciente, tr);
-  });
+});
 
-  tdActions.appendChild(buttonEditar);
-  tdActions.appendChild(buttonRemover);
+tdActions.appendChild(buttonEditar);
+tdActions.appendChild(buttonRemover);
 
-  tr.append(tdNome, tdIdade, tdGenero, tdSintoma, tdId, tdActions);
+tr.append(tdNome, tdIdade, tdGenero, tdSintoma, tdId, tdActions);
 
-  if (tBody) tBody.appendChild(tr);
-  else table.appendChild(tr);
-  cardList.classList.remove("hide")
+if (tBody) tBody.appendChild(tr);
+else table.appendChild(tr);
+cardList.classList.remove("hide")
 }
 
+// MOSTRAR LISTA DE PACIENTES CADASTRADOS
 function MostrarLista() {
   const tBodyAll = tBody.querySelectorAll("tr")
   tBodyAll.forEach((el)=>{
     el.lastChild.classList.add("hide")
-  })
+})
 
-  painel.classList.add("hide")
+painel.classList.add("hide")
   
- const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 
-  if(pacientes.length === 0) {
+if(pacientes.length === 0) {
   tokenSession.classList.remove("hide")
   painel.classList.add("hide")
   painel2.classList.add("hide");
@@ -201,16 +213,20 @@ function MostrarLista() {
   containerAviso.classList.remove("green")
   aviso.classList.remove("green")
 
-    setTimeout(()=>{
-    aviso.classList.add("hide")
-    },1000)
+  setTimeout(()=>{aviso.classList.add("hide")},1000)
+  } 
+  else{
+      tokenSession.classList.add("hide")
+      painel2.classList.remove("hide")
   }
 }
 
+// EVENTO DE OLHAR LISTA 
 olharLista.addEventListener("click", () =>{
   MostrarLista()
 })
 
+// MOSTRAR ERRO CASO O USUARIO NÃO PREENCHA OS CAMPOS OU ALGUM CAMPO ESTEJA INVALIDO 
 function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
  
   if(!valor){
@@ -232,6 +248,7 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
   return false
 }
 
+// VALIDAR CAMPOS 
 function validarCampos() {
   aviso.classList.add("hide")
   containerAviso.classList.remove("green")
@@ -249,6 +266,7 @@ function validarCampos() {
   return true
 }
 
+// VALIDAR TOKEN 
 function validToken() {
   const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 
@@ -286,6 +304,7 @@ function validToken() {
   return true;
 }
 
+// EVENTO DE CADASTRAR USUARIO 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
   
@@ -295,6 +314,7 @@ cadastrarBtn.addEventListener("click", (e) => {
 
 });
   
+// CADASTRAR PACIENTE
 function cadastrarPaciente() {
   resetBtn.classList.remove("hide")
   sideBar.classList.remove("hidden")
@@ -316,12 +336,14 @@ function cadastrarPaciente() {
 
 const limparBtn = document.querySelector("#reset-btn")
 
+// SALVAR PACIENTES NA LOCAL STORAGE 
 function salvarPacienteLocalStorage(paciente) {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
   pacientesSalvos.push(paciente);
   localStorage.setItem("pacientes", JSON.stringify(pacientesSalvos));
 }
 
+// REMOVER PACIENTES DA LOCAL STORAGE 
 function removerPacienteLocalStorage(pacienteRemovido) {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
   // comparar por 'id' (sem underscore) — era o bug
@@ -329,13 +351,12 @@ function removerPacienteLocalStorage(pacienteRemovido) {
   localStorage.setItem("pacientes", JSON.stringify(novosPacientes));
 }
 
+// LIMPAR CAMPOS 
 function limparCampos() {
-  nomePaciente.value = "";
-  idadePaciente.value = "";
-  generoSelect.value = "";
-  sintomas.value = "";
+  [nomePaciente, idadePaciente, generoSelect, sintomas].forEach((el)=> el.value = "")
 }
 
+// CRIA BTN DE CONFIRMAR REMOÇÃO
 function criaButtonConfirmar(){
   const buttonConfirmar = document.createElement("button");
   buttonConfirmar.classList.add("CC-btn")
@@ -344,6 +365,7 @@ function criaButtonConfirmar(){
   return buttonConfirmar;
 }
 
+// CRIA BTN DE CANCELAR REMOÇÃO 
 function criaButtonCancelar(){
   const buttonCancelar = document.createElement("button");
   buttonCancelar.classList.add("CC-btn")
@@ -352,10 +374,11 @@ function criaButtonCancelar(){
   return buttonCancelar;
 }
 
-function confirmarRemocao(paciente, tr) {
-  const container = document.createElement("div");
+ const container = document.createElement("div");
   container.id = "div-remocao";
-
+// CONFIRMAR REMOÇÃO DE PACIENTE 
+function confirmarRemocao(paciente, tr) {
+ 
   const box = document.createElement("div");
   box.id = "box-remocao"
 
@@ -370,13 +393,13 @@ function confirmarRemocao(paciente, tr) {
     tr.remove();
     removerPacienteLocalStorage(paciente);
     document.body.removeChild(container);
-    // hide container if no rows left
     if (!tBody.querySelector("tr")) painel2.classList.add("hide") 
-  });
+});
 
-  btnCancelar.addEventListener("click", () => {
+// EVENTO DE CANCELAR REMOÇÃO DE PACIENTE
+btnCancelar.addEventListener("click", () => {
     document.body.removeChild(container);
-  });
+});
 
   box.appendChild(h2);
   box.appendChild(btnCancelar);
@@ -385,17 +408,23 @@ function confirmarRemocao(paciente, tr) {
   document.body.appendChild(container);
 }
 
+let temContainer = false  
+if(container){
+  temContainer = true 
+console.log("TEM CONTAINER", temContainer)
+} 
+// CONTROLA A FUNÇÃO DO ENTER DEPENDENDO DO QUE ESTÁ NA TELA  
 function controlarEnter(e) {
   if (e.key !== "Enter") return;
+      containerAviso.classList.remove("hide")
+    aviso.classList.remove("hide")
 
   e.preventDefault();
 
- 
   if (!tokenSession.classList.contains("hide")) {
     confirmarToken();
     return;
   }
-
 
   if (!painel.classList.contains("hide")) {
     if (validarCampos()) {
@@ -408,8 +437,10 @@ function controlarEnter(e) {
     }
   }
 }
+
 document.addEventListener("keydown", controlarEnter);
 
+// INICIO 
 carregarPacientes()
 
 
