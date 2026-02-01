@@ -44,56 +44,48 @@ nomePaciente.addEventListener("input", () => {
   nomePaciente.value = nomePaciente.value.replace(/\d/g, "")
 });
 
-function confirmarToken(){
-  const tokenValue = token.value
-  if(!tokenValue){
-    aviso.classList.remove("hide")
-    aviso.textContent = "Preencha o token"
-    setTimeout(()=>{aviso.classList.add("hide")}, 1000)
-    return 
-  } 
+function confirmarToken() {
+  const tokenValue = token.value.trim()
 
-  if(tokenValue === "Admin"){
+  const mostrarAviso = (mensagem, verde = false) => {
+    aviso.textContent = mensagem
+    aviso.classList.toggle("green", verde)
+    containerAviso.classList.toggle("green", verde)
     aviso.classList.remove("hide")
-    aviso.textContent = "Acesso permitido"
-    setTimeout(()=>{aviso.classList.add("hide")}, 1000)
-    containerAviso.classList.add("green")
-    aviso.classList.add("green")
-    tokenSession.classList.add("hide")
-    painel.classList.remove("hide")  
-    painel2.classList.add("hide")
 
-  const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
-
-  if(pacientes.length > 0) {
-  painel2.classList.remove("hide");
-  } else {
-    painel2.classList.add("hide");
-    aviso.classList.remove("hide")
+    setTimeout(() => {
+      aviso.classList.add("hide")
+    }, 1000)
   }
 
-  } else if(tokenValue !== "Admin"){
-    containerAviso.classList.remove("green")
-    aviso.classList.remove("green")
-    aviso.classList.remove("hide")
-    aviso.textContent = "Token invalido"
+  if (!tokenValue) {
+    mostrarAviso("Preencha o token")
+    return
+  }
+
+  if (tokenValue !== "Admin") {
+    mostrarAviso("Token inválido")
     token.value = ""
-
-    setTimeout(()=>{aviso.classList.add("hide")}, 1000)
-
-    return    
+    return
   }
+
   
-  if(!painel.classList.contains("hide") && !painel2.classList.contains("hide")){
-    tokenSession.classList.add("hide")
-  }
+  mostrarAviso("Acesso permitido", true)
+
+  tokenSession.classList.add("hide")
+  painel.classList.remove("hide")
+
+  const pacientes = JSON.parse(localStorage.getItem("pacientes")) || []
+  painel2.classList.toggle("hide", pacientes.length === 0)
+
   token.value = ""
 
-  if(cardList.classList.contains("hide")) painel2.classList.add("hide")
+  if (cardList.classList.contains("hide")) {
+    painel2.classList.add("hide")
+  }
 
-    const tBodyAll = tBody.querySelectorAll("tr")
-    tBodyAll.forEach((el)=>{
-    el.lastChild.classList.remove("hide")
+  tBody.querySelectorAll("tr").forEach(tr => {
+    tr.lastChild.classList.remove("hide")
   })
 }
 
