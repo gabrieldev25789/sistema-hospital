@@ -46,7 +46,19 @@ nomePaciente.addEventListener("input", () => {
 
 function confirmarToken(){
   const tokenValue = token.value
+  if(!tokenValue){
+    aviso.classList.remove("hide")
+    aviso.textContent = "Preencha o token"
+    setTimeout(()=>{aviso.classList.add("hide")}, 1000)
+    return 
+  } 
+
   if(tokenValue === "Admin"){
+    aviso.classList.remove("hide")
+    aviso.textContent = "Acesso permitido"
+    setTimeout(()=>{aviso.classList.add("hide")}, 1000)
+    containerAviso.classList.add("green")
+    aviso.classList.add("green")
     tokenSession.classList.add("hide")
     painel.classList.remove("hide")  
     painel2.classList.add("hide")
@@ -57,14 +69,21 @@ function confirmarToken(){
   painel2.classList.remove("hide");
   } else {
     painel2.classList.add("hide");
-  }
-
-  } else {
     aviso.classList.remove("hide")
-
-  return    
   }
 
+  } else if(tokenValue !== "Admin"){
+    containerAviso.classList.remove("green")
+    aviso.classList.remove("green")
+    aviso.classList.remove("hide")
+    aviso.textContent = "Token invalido"
+    token.value = ""
+
+    setTimeout(()=>{aviso.classList.add("hide")}, 1000)
+
+    return    
+  }
+  
   if(!painel.classList.contains("hide") && !painel2.classList.contains("hide")){
     tokenSession.classList.add("hide")
   }
@@ -187,6 +206,8 @@ function MostrarLista() {
   painel2.classList.add("hide");
   aviso.classList.remove("hide")
   aviso.textContent = "Sem pacientes cadastrados"
+  containerAviso.classList.remove("green")
+  aviso.classList.remove("green")
 
     setTimeout(()=>{
     aviso.classList.add("hide")
@@ -221,6 +242,8 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
 
 function validarCampos() {
   aviso.classList.add("hide")
+  containerAviso.classList.remove("green")
+  aviso.classList.remove("green")
 
   if(
     mostrarErro(nomePaciente.value.trim(), aviso, "nome") ||
@@ -271,11 +294,9 @@ function validToken() {
   return true;
 }
 
-
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
   
-
   if (validarCampos()) cadastrarPaciente();
 
   if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
@@ -371,6 +392,31 @@ function confirmarRemocao(paciente, tr) {
   container.appendChild(box);
   document.body.appendChild(container);
 }
+
+function controlarEnter(e) {
+  if (e.key !== "Enter") return;
+
+  e.preventDefault();
+
+ 
+  if (!tokenSession.classList.contains("hide")) {
+    confirmarToken();
+    return;
+  }
+
+
+  if (!painel.classList.contains("hide")) {
+    if (validarCampos()) {
+      cadastrarPaciente();
+
+      if (estagio === 2) {
+        cadastrarBtn.textContent = "Cadastrar";
+        estagio = 0;
+      }
+    }
+  }
+}
+document.addEventListener("keydown", controlarEnter);
 
 carregarPacientes()
 
