@@ -10,6 +10,7 @@
 <body>
   <header class="topbar">
     <h1 class="brand">HospSys</h1>
+    <h2>Token: <span id="admin">"Admin"</span></h2>
     <div class="top-actions">
       <span>Usuário: <strong>Recepção</strong></span>
     </div>
@@ -23,12 +24,9 @@
     <aside class="sidebar">
       <nav>
         <ul class="menu">
-          <li><a href="#">🏠 Dashboard</a></li>
-          <li><a href="#">🧑‍⚕️ Médicos</a></li>
-          <li><a href="#">👨‍👩‍👧 Pacientes</a></li>
-          <li><a href="#">📅 Consultas</a></li>
-          <li><a href="#">💊 Estoque</a></li>
-          <li><a href="#">⚙️ Configurações</a></li>
+          <li><a href="#" class="funcional" id="dashboard">🏠 Dashboard</a></li>
+          <li><a href="./medicos.html" target="_blank" class="funcional" id="medicos">🧑‍⚕️ Médicos</a></li>
+          <li><a href="#" class="funcional" id="pacientes">👨‍👩‍👧 Pacientes</a></li>
         </ul>
       </nav>
     </aside>
@@ -39,17 +37,13 @@
         <div id="token-session">
             <h2>Confirmar administrador</h2>
             <input type="text" id="token" placeholder="Digite o token de adm">
-            <button id="confirmar-token">Confrimar Token</button>
-        </div> 
-        
-         <div id="lista-session">
-            <h2>Olhar lista de pacientes</h2>
-            <button id="olhar-lista">Olhar lista</button>
-        </div>  
+            <button id="confirmar-token">Confirmar Token</button>
+        </div>   
       </div> 
       </section>
 
       <section class="panel">
+
         <h2>Cadastro de Paciente</h2>
         <form id="patient-form" class="form">
           <div class="row">
@@ -106,9 +100,5 @@
       </section>
     </main>
   </div>
-
-  <footer class="footer">
-    <small>Demo - Sistema Hospitalar • Projeto de estudo</small>
-  </footer>
 </body>
 </html>
