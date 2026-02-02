@@ -205,17 +205,20 @@ painel.classList.add("hide")
 const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
 
 if(pacientes.length === 0) {
+
   tokenSession.classList.remove("hide")
-  painel.classList.add("hide")
-  painel2.classList.add("hide");
-  aviso.classList.remove("hide")
+
+  if (painel) painel.classList.add("hide")
+  if (painel2) painel2.classList.add("hide")
+
+  aviso.classList.remove("hide", "green")
   aviso.textContent = "Sem pacientes cadastrados"
+
   containerAviso.classList.remove("green")
-  aviso.classList.remove("green")
 
   setTimeout(()=>{aviso.classList.add("hide")},1000)
-  } 
-  else{
+
+  } else{
       tokenSession.classList.add("hide")
       painel2.classList.remove("hide")
   }
@@ -232,6 +235,7 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
   if(!valor){
     texto.classList.remove("hide")
     texto.textContent = `Preencha o campo ${nomeCampo}`
+    setTimeout(()=>{texto.classList.add("hide")}, 1000)
     return true
   }
 
@@ -241,6 +245,7 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
     if(Number.isNaN(idade) || idade < 0 || idade > 120){
       texto.classList.remove("hide")
       texto.textContent = "Idade inválida"
+      setTimeout(()=>{texto.classList.add("hide")}, 1000)
       return true
     }
   }
@@ -374,7 +379,7 @@ function criaButtonCancelar(){
   return buttonCancelar;
 }
 
- const container = document.createElement("div");
+  const container = document.createElement("div");
   container.id = "div-remocao";
 // CONFIRMAR REMOÇÃO DE PACIENTE 
 function confirmarRemocao(paciente, tr) {
@@ -409,15 +414,19 @@ btnCancelar.addEventListener("click", () => {
 }
 
 let temContainer = false  
-if(container){
-  temContainer = true 
-console.log("TEM CONTAINER", temContainer)
-} 
+
 // CONTROLA A FUNÇÃO DO ENTER DEPENDENDO DO QUE ESTÁ NA TELA  
+
 function controlarEnter(e) {
   if (e.key !== "Enter") return;
-      containerAviso.classList.remove("hide")
-    aviso.classList.remove("hide")
+
+  const modalRemocaoAberto = document.querySelector("#div-remocao");
+
+  if (modalRemocaoAberto) {
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
 
   e.preventDefault();
 
