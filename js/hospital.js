@@ -154,6 +154,7 @@ function adicionarPacienteNaTabela(paciente) {
   buttonRemover.textContent = "Remover";
 
   buttonRemover.addEventListener("click", () => {
+    console.log("REMOVER")
     confirmarRemocao(paciente, tr);
   });
 
@@ -351,7 +352,7 @@ function salvarPacienteLocalStorage(paciente) {
 // REMOVER PACIENTES DA LOCAL STORAGE 
 function removerPacienteLocalStorage(pacienteRemovido) {
   const pacientesSalvos = JSON.parse(localStorage.getItem("pacientes")) || [];
-  // comparar por 'id' (sem underscore) — era o bug
+
   const novosPacientes = pacientesSalvos.filter((p) => p.id !== pacienteRemovido.id);
   localStorage.setItem("pacientes", JSON.stringify(novosPacientes));
 }
@@ -381,11 +382,19 @@ function criaButtonCancelar(){
 
   const container = document.createElement("div");
   container.id = "div-remocao";
+
 // CONFIRMAR REMOÇÃO DE PACIENTE 
+
 function confirmarRemocao(paciente, tr) {
- 
+
+  // 🔒 impede múltiplos modais
+  if (document.querySelector("#div-remocao")) return;
+
+  const container = document.createElement("div");
+  container.id = "div-remocao";
+
   const box = document.createElement("div");
-  box.id = "box-remocao"
+  box.id = "box-remocao";
 
   const h2 = document.createElement("h2");
   h2.id = "remocao-h2";
@@ -397,21 +406,22 @@ function confirmarRemocao(paciente, tr) {
   btnConfirmar.addEventListener("click", () => {
     tr.remove();
     removerPacienteLocalStorage(paciente);
-    document.body.removeChild(container);
-    if (!tBody.querySelector("tr")) painel2.classList.add("hide") 
-});
+    container.remove();
 
-// EVENTO DE CANCELAR REMOÇÃO DE PACIENTE
-btnCancelar.addEventListener("click", () => {
-    document.body.removeChild(container);
-});
+    if (!tBody.querySelector("tr")) {
+      painel2.classList.add("hide");
+    }
+  });
 
-  box.appendChild(h2);
-  box.appendChild(btnCancelar);
-  box.appendChild(btnConfirmar);
+  btnCancelar.addEventListener("click", () => {
+    container.remove();
+  });
+
+  box.append(h2, btnCancelar, btnConfirmar);
   container.appendChild(box);
   document.body.appendChild(container);
 }
+
 
 let temContainer = false  
 
