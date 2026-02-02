@@ -242,7 +242,7 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
   if(tipo === "idade"){
     const idade = Number(valor)
 
-    if(Number.isNaN(idade) || idade < 0 || idade > 120){
+    if(Number.isNaN(idade) || idade <= 0 || idade > 120){
       texto.classList.remove("hide")
       texto.textContent = "Idade inválida"
       setTimeout(()=>{texto.classList.add("hide")}, 1000)
@@ -416,7 +416,6 @@ btnCancelar.addEventListener("click", () => {
 let temContainer = false  
 
 // CONTROLA A FUNÇÃO DO ENTER DEPENDENDO DO QUE ESTÁ NA TELA  
-
 function controlarEnter(e) {
   if (e.key !== "Enter") return;
 
