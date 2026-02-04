@@ -435,21 +435,6 @@ body{
   border-bottom: 2px solid black;
 }
 
-/* Responsividade */
-/*
-@media (max-width:900px){
-  .container{grid-template-columns:1fr; padding:12px}
-  .sidebar{order:2}
-  .main{order:1}
-}
-
-.hide{
-    display: none;
-} */ 
-
-/* =========================
-   TABLET (até 1024px)
-========================= */
 @media (max-width: 1024px) {
 
   .container {
@@ -559,52 +544,6 @@ body{
     margin: 0.5rem 0;
   }
 }
-
-/* =========================
-   MOBILE PEQUENO (até 480px)
-========================= */
-/*
-@media (max-width: 480px) {
-  .topbar{
-    width: 126%;
-  }
-
-  .brand {
-    font-size: 1rem;
-  }
-
-  .top-actions {
-    font-size: 0.8rem;
-  }
-
-  #aviso {
-    font-size: 1.6rem;
-    padding: 0.4rem;
-    width: 126%;
-  }
-
-  #admin {
-    font-size: 1.2rem;
-  }
-
-  .menu {
-    gap: 8px;
-  }
-
-  .menu a {
-    font-size: 0.85rem;
-  }
-
-  .panel{
-    max-width: 100%;
-    min-width: 100%;
-  }
-
-    .panel2 {
-    width: 100%;
-    }
-}
-*/
 
 @media (max-width: 480px) {
 
