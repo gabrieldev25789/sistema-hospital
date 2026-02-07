@@ -32,6 +32,16 @@ const resetBtn = document.querySelector("#reset-btn")
 
 const containerAviso = document.querySelector("#container-aviso")
 
+// FUNÇÃO PRA NÃO FICAR REPITINDO TODA HORA O CLASSLIST NO CODIGO
+function toggleClasList(action, p1, p2, p3 = null){
+    if(p3 !== null ){
+      [p1, p2, p3].forEach((el) => el.classList[action]("hide"))
+    } else{
+      [p1, p2].forEach((el) => el.classList[action]("hide"))
+    } 
+    
+}
+
 // EVENTO DO DASHBOARD
 dashboard.addEventListener("click", () =>{
   [aviso, painel, painel2].forEach((el)=> el.classList.add("hide"))
@@ -49,8 +59,8 @@ nomePaciente.addEventListener("input", () => {
 
 // FUNÇÃO DE CONFIRMAR TOKEN 
 function confirmarToken() {
-  containerAviso.classList.remove("hide")
-  aviso.classList.remove("hide")
+  toggleClasList("remove", containerAviso, aviso)
+
   const tokenValue = token.value.trim()
 
   const mostrarAviso = (mensagem, verde = false) => {
@@ -179,7 +189,6 @@ function editarPaciente(paciente, linha) {
 
   nomePaciente.focus();
   [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
-
 }
 
 // EVENTO DE EDITAR PACIENTE 
@@ -241,7 +250,6 @@ olharLista.addEventListener("click", () =>{
 
 // MOSTRAR ERRO CASO O USUARIO NÃO PREENCHA OS CAMPOS OU ALGUM CAMPO ESTEJA INVALIDO 
 function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
-
 
   if(!valor){
     texto.classList.remove("hide")
@@ -314,8 +322,7 @@ function validToken() {
   }
 
   // token válido
-  aviso.classList.add("hide");
-  tokenSession.classList.add("hide");
+  toggleClasList("add", aviso, tokenSession)
   painel.classList.remove("hide");
 
   return true;
@@ -332,12 +339,11 @@ function pacienteCadastrado(){
   },1000)
 }
 
+
 // EVENTO DE CADASTRAR USUARIO 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  containerAviso.classList.remove("hide")
-  aviso.classList.remove("hide")
-  
+  toggleClasList("remove", containerAviso, aviso)  
   if (validarCampos()) cadastrarPaciente();
 
   if(estagio === 2) cadastrarBtn.textContent = "Cadastrar"
@@ -346,10 +352,8 @@ cadastrarBtn.addEventListener("click", (e) => {
   
 // CADASTRAR PACIENTE
 function cadastrarPaciente(){
-  resetBtn.classList.remove("hide")
+  toggleClasList("remove", resetBtn, painel2, pacientesContainer)  
   sideBar.classList.remove("hidden")
-  painel2.classList.remove("hide")
-  pacientesContainer.classList.remove("hide");
 
   const paciente = {
     id: Date.now().toString(),
@@ -413,7 +417,6 @@ function criaButtonCancelar(){
 
 function confirmarRemocao(paciente, tr) {
 
-  // 🔒 impede múltiplos modais
   if (document.querySelector("#div-remocao")) return;
 
   const container = document.createElement("div");
