@@ -49,6 +49,8 @@ nomePaciente.addEventListener("input", () => {
 
 // FUNÇÃO DE CONFIRMAR TOKEN 
 function confirmarToken() {
+  containerAviso.classList.remove("hide")
+  aviso.classList.remove("hide")
   const tokenValue = token.value.trim()
 
   const mostrarAviso = (mensagem, verde = false) => {
@@ -154,13 +156,14 @@ function adicionarPacienteNaTabela(paciente) {
   buttonRemover.textContent = "Remover";
 
   buttonRemover.addEventListener("click", () => {
-    console.log("REMOVER")
     confirmarRemocao(paciente, tr);
   });
 
 // EDITAR PACIENTE  
 function editarPaciente(paciente, linha) {  
+  aviso.textContent = "Pciente editado"
   sideBar.classList.add("hidden")
+  /* EDITAR BUGANDO */ 
   estagio = 2 
   cadastrarBtn.textContent = "Salvar alteração"
 
@@ -176,12 +179,15 @@ function editarPaciente(paciente, linha) {
 
   nomePaciente.focus();
   [limparBtn, painel2].forEach((el) => el.classList.add("hide"))
+
 }
 
 // EVENTO DE EDITAR PACIENTE 
 buttonEditar.addEventListener("click", () => {
+
     estagio = 1
     editarPaciente(paciente, tr);
+    
 });
 
 tdActions.appendChild(buttonEditar);
@@ -196,6 +202,7 @@ cardList.classList.remove("hide")
 
 // MOSTRAR LISTA DE PACIENTES CADASTRADOS
 function MostrarLista() {
+  limparCampos()
   const tBodyAll = tBody.querySelectorAll("tr")
   tBodyAll.forEach((el)=>{
     el.lastChild.classList.add("hide")
@@ -223,6 +230,8 @@ if(pacientes.length === 0) {
       tokenSession.classList.add("hide")
       painel2.classList.remove("hide")
   }
+
+  return true 
 }
 
 // EVENTO DE OLHAR LISTA 
@@ -232,11 +241,15 @@ olharLista.addEventListener("click", () =>{
 
 // MOSTRAR ERRO CASO O USUARIO NÃO PREENCHA OS CAMPOS OU ALGUM CAMPO ESTEJA INVALIDO 
 function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
- 
+
+
   if(!valor){
     texto.classList.remove("hide")
     texto.textContent = `Preencha o campo ${nomeCampo}`
+    containerAviso.classList.remove("green")
+    aviso.classList.remove("green")
     setTimeout(()=>{texto.classList.add("hide")}, 1000)
+
     return true
   }
 
@@ -256,9 +269,7 @@ function mostrarErro(valor, texto, nomeCampo, tipo = "texto"){
 
 // VALIDAR CAMPOS 
 function validarCampos() {
-  aviso.classList.add("hide")
-  containerAviso.classList.remove("green")
-  aviso.classList.remove("green")
+
 
   if(
     mostrarErro(nomePaciente.value.trim(), aviso, "nome") ||
@@ -310,9 +321,22 @@ function validToken() {
   return true;
 }
 
+function pacienteCadastrado(){
+  containerAviso.classList.add("green")
+  aviso.classList.remove("hide")
+  aviso.classList.add("green")
+  aviso.textContent = "Paciente cadastrado"
+    setTimeout(()=>{
+    containerAviso.classList.add("hide")
+    aviso.classList.remove("green")
+  },1000)
+}
+
 // EVENTO DE CADASTRAR USUARIO 
 cadastrarBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  containerAviso.classList.remove("hide")
+  aviso.classList.remove("hide")
   
   if (validarCampos()) cadastrarPaciente();
 
@@ -321,7 +345,7 @@ cadastrarBtn.addEventListener("click", (e) => {
 });
   
 // CADASTRAR PACIENTE
-function cadastrarPaciente() {
+function cadastrarPaciente(){
   resetBtn.classList.remove("hide")
   sideBar.classList.remove("hidden")
   painel2.classList.remove("hide")
@@ -338,6 +362,8 @@ function cadastrarPaciente() {
   adicionarPacienteNaTabela(paciente);
   salvarPacienteLocalStorage(paciente);
   limparCampos();
+
+  pacienteCadastrado()
 }
 
 const limparBtn = document.querySelector("#reset-btn")
@@ -404,6 +430,9 @@ function confirmarRemocao(paciente, tr) {
   const btnCancelar = criaButtonCancelar();
 
   btnConfirmar.addEventListener("click", () => {
+    aviso.classList.add("hide")
+    containerAviso.classList.remove("green", "hide")
+    aviso.classList.remove("green")
     tr.remove();
     removerPacienteLocalStorage(paciente);
     container.remove();
@@ -431,13 +460,16 @@ function controlarEnter(e) {
 
   const modalRemocaoAberto = document.querySelector("#div-remocao");
 
-  if (modalRemocaoAberto) {
+  if (modalRemocaoAberto && !modalRemocaoAberto.classList.contains("hide")) {
     e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation();
     return;
   }
 
   e.preventDefault();
+
+  containerAviso.classList.remove("hide");
+  aviso.classList.remove("hide");
 
   if (!tokenSession.classList.contains("hide")) {
     confirmarToken();
@@ -456,7 +488,7 @@ function controlarEnter(e) {
   }
 }
 
-document.addEventListener("keydown", controlarEnter);
+document.addEventListener("keydown", controlarEnter, true);
 
 // INICIO 
 carregarPacientes()
